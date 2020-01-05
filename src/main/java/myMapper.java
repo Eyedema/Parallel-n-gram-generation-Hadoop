@@ -13,7 +13,7 @@ public class myMapper extends Mapper<Object, Text, Text, IntWritable> {
     private Text ngramWord = new Text();
     private Text currentWord = new Text();
 
-    public static List<String> ngrams(int n, String str) {
+    private List<String> ngrams(int n, String str) {
         List<String> ngrams = new ArrayList<String>();
         for (int i = 0; i < str.length() - n + 1; i++) {
             ngrams.add(str.substring(i, i + n));
@@ -21,6 +21,7 @@ public class myMapper extends Mapper<Object, Text, Text, IntWritable> {
         return ngrams;
     }
 
+    @Override
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
         StringTokenizer itr = new StringTokenizer(value.toString());
         while (itr.hasMoreTokens()) {
