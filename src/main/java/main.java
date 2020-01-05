@@ -17,9 +17,9 @@ public class main {
 
     public static void main(String[] args) throws URISyntaxException, IOException, ClassNotFoundException, InterruptedException {
         System.setProperty("hadoop.home.dir", "/home/eyedema/hadoop");
-        FileSystem fs = FileSystem.get(new URI(NAME_NODE), new Configuration());
-        fs.delete(new Path("/user/eyedema/books/output/"), true);
         Configuration conf = new Configuration();
+        FileSystem fs = FileSystem.get(new URI(NAME_NODE), conf);
+        fs.delete(new Path("/user/eyedema/books/output/"), true);
         Job job = Job.getInstance(conf, "N-gram calculation");
         job.setJarByClass(main.class);
         job.setMapperClass(myMapper.class);
