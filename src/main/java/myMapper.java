@@ -32,5 +32,4 @@ public class myMapper extends Mapper<Object, Text, Text, IntWritable> {
             }
         }
     }
-
 }
