@@ -16,7 +16,8 @@ public class myMapper extends Mapper<Object, Text, Text, IntWritable> {
     private List<String> ngrams(int n, String str) {
         List<String> ngrams = new ArrayList<String>();
         for (int i = 0; i < str.length() - n + 1; i++) {
-            ngrams.add(str.substring(i, i + n));
+            String temp = str.substring(i, i + n);
+            ngrams.add(temp);
         }
         return ngrams;
     }

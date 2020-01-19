@@ -22,7 +22,7 @@ public class main {
         fs.delete(new Path("/user/eyedema/books/output/"), true);
         Job job = Job.getInstance(conf, "N-gram calculation");
         job.setJarByClass(main.class);
-        job.setMapperClass(myMapper.class);
+        job.setMapperClass(textInputMapper.class);
         job.setCombinerClass(myReducer.class);
         job.setReducerClass(myReducer.class);
         job.setOutputKeyClass(Text.class);
@@ -30,5 +30,12 @@ public class main {
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
+        // aggiungere molti altri libri (anche 50). Il risultato che si ottiene è ok, ma la rimozione di punteggiatura,
+        // numeri e caratteri speciali va fatta dentro Hadoop. Bisogna fare degli altri map/reduce per fare proprio questo
+        // prima dell'effettivo calcolo degli ngram. Devo implementare quello degli ngram anche per le parole (basta cambiare
+        // poco nel mapper); bisogna vedere se riesco a fare 2 file di output ma non è così importante.
+        // si può fare qualche istogramma con i dati in outputh.
+        // per quello delle password basta poter vedere un plateau nel grafico. Devo scegliere bene la parola che sto cercando
+        // per vedere in che punto dei chunk si trova.
     }
 }
