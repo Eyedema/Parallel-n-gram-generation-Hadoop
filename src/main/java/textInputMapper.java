@@ -3,23 +3,26 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import java.io.IOException;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.List;
 
-public class textInputMapper extends Mapper<Object, Text, Text, IntWritable> {
+public class textInputMapper extends Mapper<Text, IntWritable, Text, IntWritable> {
 
-    private final static IntWritable one = new IntWritable(1);
-    private Text parsedBook = new Text();
+    private List<String> ngrams(int n, String str) {
+        List<String> ngrams = new ArrayList<String>();
+        for (int i = 0; i < str.length() - n + 1; i++) {
+            String temp = str.substring(i, i + n);
+            ngrams.add(temp);
+        }
+        return ngrams;
+    }
 
     @Override
-    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-        StringTokenizer itr = new StringTokenizer(value.toString(), " '!()-[]{};:,<>./?@#$%^&*_~—”“\n");
-        while (itr.hasMoreTokens()) {
-            String tempWord = itr.nextToken().toLowerCase().replaceAll("[0-9]", "");
-            if (tempWord.matches("\\w+")) {
-                tempWord = tempWord + " ";
-                parsedBook.append(tempWord.getBytes(), 0, tempWord.length());
-            }
+    public void map(Text key, IntWritable value, Context context) throws IOException, InterruptedException {
+        List<String> wordNgrams = ngrams(3, key.toString());
+        for (String ngram : wordNgrams) {
+            Text tmpWord = new Text(ngram);
+            context.write(tmpWord, value);
         }
-        context.write(parsedBook, one);
     }
 }
