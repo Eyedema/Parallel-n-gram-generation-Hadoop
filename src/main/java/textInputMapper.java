@@ -19,7 +19,7 @@ public class textInputMapper extends Mapper<Text, IntWritable, Text, IntWritable
 
     @Override
     public void map(Text key, IntWritable value, Context context) throws IOException, InterruptedException {
-        List<String> wordNgrams = ngrams(3, key.toString());
+        List<String> wordNgrams = ngrams(context.getConfiguration().getInt("n", 3), key.toString());
         for (String ngram : wordNgrams) {
             Text tmpWord = new Text(ngram);
             context.write(tmpWord, value);
