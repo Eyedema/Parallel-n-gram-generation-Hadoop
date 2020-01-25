@@ -1,3 +1,5 @@
+package letters;
+
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -6,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class textInputMapper extends Mapper<Text, IntWritable, Text, IntWritable> {
+public class NgramMapperLetters extends Mapper<Text, IntWritable, Text, IntWritable> {
 
     private List<String> ngrams(int n, String str) {
         List<String> ngrams = new ArrayList<String>();
