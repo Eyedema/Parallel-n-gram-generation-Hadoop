@@ -31,11 +31,11 @@ public class main extends Configured implements Tool {
 
     @Override
     public int run(String[] args) throws Exception {
-        System.setProperty("hadoop.home.dir", "/home/eyedema/hadoop");
+        System.setProperty("hadoop.home.dir", args[6]);
         Configuration conf = new Configuration();
         FileSystem fs = FileSystem.get(new URI(NAME_NODE), conf);
-        fs.delete(new Path("/user/eyedema/output/"), true);
-        fs.delete(new Path("/user/eyedema/output2/"), true);
+        fs.delete(new Path(args[1]), true);
+        fs.delete(new Path(args[2]), true);
         Job job = Job.getInstance(conf, "N-gram calculation - letters");
         job.setJarByClass(getClass());
         // MapReduce chaining
@@ -47,7 +47,7 @@ public class main extends Configured implements Tool {
         map2Conf.setInt("n", Integer.parseInt(args[3]));
         ChainMapper.addMapper(job, NgramMapperLetters.class, Text.class, IntWritable.class,
                 Text.class, IntWritable.class, map2Conf);
-
+        job.setCombinerClass(GeneralReducer.class);
         Configuration reduceConf = new Configuration(false);
         ChainReducer.setReducer(job, GeneralReducer.class, Text.class, IntWritable.class,
                 Text.class, IntWritable.class, reduceConf);
@@ -67,17 +67,17 @@ public class main extends Configured implements Tool {
         map4Conf.setInt("n", Integer.parseInt(args[4]));
         ChainMapper.addMapper(job2, WordMapper.class, Text.class, IntWritable.class,
                 Text.class, IntWritable.class, map4Conf);
+        job2.setCombinerClass(GeneralReducer.class);
         Configuration reduceConf2 = new Configuration(false);
         ChainReducer.setReducer(job2, GeneralReducer.class, Text.class, IntWritable.class,
                 Text.class, IntWritable.class, reduceConf2);
         job2.setOutputKeyClass(Text.class);
         job2.setOutputValueClass(IntWritable.class);
-        //job2.setSortComparatorClass(LongWritable.DecreasingComparator.class);
 
         FileInputFormat.addInputPath(job2, new Path(args[0]));
         FileOutputFormat.setOutputPath(job2, new Path(args[2]));
         job.waitForCompletion(false);
-        //job2.waitForCompletion(false);
+        job2.waitForCompletion(false);
 
         return 0;
     }
