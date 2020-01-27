@@ -8,7 +8,7 @@ In order to run the program, there must be a local Hadoop installation running. 
 3. HDFS output directory of the second MapReduce job
 4. ```n```, as the n in *n*-gram for letters
 5. ```m```, as the n in *n*-gram for words
-6. ```true``` or ```false```, to choose wether or not remove the stopwords from the books
+6. ```true``` or ```false```, to choose whether or not to remove the stopwords from the books
 7. the local hadoop installation directory
 
 So, some sample execution arguments can be:
