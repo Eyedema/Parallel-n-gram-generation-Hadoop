@@ -1,5 +1,7 @@
 # Parallel n-gram generation with Hadoop
 
+In this work we will show how to implement the generation of n-grams in a parallel and distributed way using the Hadoop framework and what optimizations can be used to further improve our approach.
+
 ## Usage
 In order to run the program with ```main.java```, there must be a local Hadoop installation running. The program takes exactly 7 arguments. In order, they are:
 
