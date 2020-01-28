@@ -1,7 +1,7 @@
 # Parallel n-gram generation with Hadoop
 
 ## Usage
-In order to run the program, there must be a local Hadoop installation running. The program takes exactly 7 arguments. In order, they are:
+In order to run the program with ```main.java```, there must be a local Hadoop installation running. The program takes exactly 7 arguments. In order, they are:
 
 1. HDFS input directory
 2. HDFS output directory of the first MapReduce job
